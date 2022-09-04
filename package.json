@@ -1,0 +1,38 @@
+{
+  "name": "api_sequelize_jest",
+  "version": "1.0.0",
+  "description": "template ts",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "./node_modules/nodemon/bin/nodemon.js ./src/bin/server.ts",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register './tests/**/*.test.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gary003/ts_template.git"
+  },
+  "author": "GJ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gary003/ts_template/issues"
+  },
+  "homepage": "https://github.com/gary003/ts_template#readme",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "sqlite3": "^5.0.11",
+    "sequelize": "^6.21.4",
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^29.0.0",
+    "@types/mocha": "^9.1.1",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
+  }
+}
