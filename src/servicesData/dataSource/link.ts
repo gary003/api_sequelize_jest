@@ -5,7 +5,9 @@ import { Sequelize } from "sequelize"
 export const createConnectionSequelize = () => {
   const uri = process.env.MYSQL_URI || ""
 
-  const sequelize = new Sequelize(uri)
+  const sequelize = new Sequelize(uri, {
+    logging: false,
+  })
 
   sequelize.authenticate()
 

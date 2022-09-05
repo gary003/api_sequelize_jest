@@ -1,4 +1,5 @@
-import { assert } from "chai"
+require("dotenv").config()
+import { describe, expect, test } from "@jest/globals"
 import { getAllUsers } from "../../../../../src/services/user"
 
 describe("src > services > user", () => {
@@ -6,8 +7,8 @@ describe("src > services > user", () => {
     const res = await getAllUsers()
     // console.log(res)
 
-    assert.isNotNull(res)
-    assert.isString(res[0].userId)
-    assert.isTrue(res[0].userId.length > 0)
+    expect(res).not.toBeNull()
+    expect(res[0].userId).toBeDefined()
+    expect(res[0].userId.length > 0).toBeTruthy()
   })
 })
