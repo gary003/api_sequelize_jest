@@ -5,7 +5,12 @@ export enum userAttributeToSelect {
 }
 
 export enum walletAttributeToSelect {
-  // WALLETID = "walletId",
+  WALLETID = "walletId",
   SOFTCURRENCY = "softCurrency",
   // HARDCURRENCY = "hardCurrency",
 }
+
+export type userType = Record<userAttributeToSelect, string>
+export type walletType = Record<walletAttributeToSelect, string>
+
+export type userInfo = userType & walletType

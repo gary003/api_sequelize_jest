@@ -2,6 +2,7 @@
 import { describe, expect, test } from "@jest/globals"
 import { getAllUsers } from "../../../../../src/services/user"
 import { transfertMoney } from "../../../../../src/servicesData/user"
+import { moneyTypes } from "../../../../../src/servicesData/wallet"
 
 describe("src > services > user", () => {
   it("should get all the users from user DB service", async () => {
@@ -14,8 +15,8 @@ describe("src > services > user", () => {
   })
 
   it("should transfert money", async () => {
-    const res = await transfertMoney("softCurrency", "35269564-0234-11ed-b939-0242ac120002", "68965564-0234-11ed-b939-0242ac120002", 40)
-    console.log({ res })
+    const res = await transfertMoney(moneyTypes.SOFTCURRENCY, "35269564-0234-11ed-b939-0242ac120002", "68965564-0234-11ed-b939-0242ac120002", 40)
+    // console.log({ res })
 
     expect(res).toBeTruthy()
   })

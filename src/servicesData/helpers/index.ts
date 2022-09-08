@@ -1,7 +1,7 @@
 import { Model } from "sequelize/types"
 
-export const cleanSequelizeResponse = async (responseObject: Model[]): Promise<Object[]> => {
-  const res: Object[] = []
+export const cleanSequelizeResponse = async (responseObject: Model[]) => {
+  const res = []
 
   for (let iKey = 0; iKey < responseObject.length; iKey += 1) {
     let key2: string = ""
@@ -22,8 +22,4 @@ export const cleanSequelizeResponse = async (responseObject: Model[]): Promise<O
   }
 
   return res
-}
-
-export const getAttributesToSelect = async (attributesEnum: any): Promise<string[]> => {
-  return Object.values(attributesEnum)
 }
