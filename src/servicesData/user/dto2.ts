@@ -1,16 +1,15 @@
-export enum userAttributeToSelect {
+import { getUserInfoById } from "."
+
+export enum userAttributes {
   USERID = "userId",
   FIRSTNAME = "firstname",
   LASTNAME = "lastname",
 }
 
-export enum walletAttributeToSelect {
+export enum walletAttributes {
   WALLETID = "walletId",
   SOFTCURRENCY = "softCurrency",
   // HARDCURRENCY = "hardCurrency",
 }
 
-export type userType = Record<userAttributeToSelect, string>
-export type walletType = Record<walletAttributeToSelect, string>
-
-export type userInfo = userType & walletType
+export type userInfo = Record<userAttributes, string> & Record<walletAttributes, string>

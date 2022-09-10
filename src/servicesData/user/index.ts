@@ -2,13 +2,14 @@ import { Model, Transaction } from "sequelize/types"
 import User from "../models/user"
 import Wallet from "../models/wallet"
 import { cleanSequelizeResponse } from "../helpers/index"
-import { userAttributeToSelect, userInfo, walletAttributeToSelect } from "./dto2"
+import { userAttributes, userInfo, walletAttributes } from "./dto2"
 import { createConnectionSequelize } from "../dataSource/link"
 import { moneyTypes } from "../wallet"
 
 export const getUserInfoById = async (userId: string): Promise<userInfo> => {
-  const userAttributesToSelect = Object.values(userAttributeToSelect)
-  const walletAttributesToSelect = Object.values(walletAttributeToSelect)
+  // console.log({ userId })
+  const userAttributesToSelect = Object.values(userAttributes)
+  const walletAttributesToSelect = Object.values(walletAttributes)
 
   const foundUser: Model | null = await User.findOne({
     include: [
@@ -28,12 +29,14 @@ export const getUserInfoById = async (userId: string): Promise<userInfo> => {
 
   const result = (await cleanSequelizeResponse([foundUser])) as userInfo[]
 
+  // console.log({ result })
+
   return result[0]
 }
 
 export const getAllUsersDB = async () => {
-  const userAttributesToSelect = Object.values(userAttributeToSelect)
-  const walletAttributesToSelect = Object.values(walletAttributeToSelect)
+  const userAttributesToSelect = Object.values(userAttributes)
+  const walletAttributesToSelect = Object.values(walletAttributes)
 
   const allUsersInfo: Model[] = await User.findAll({
     include: [
@@ -52,8 +55,8 @@ export const getAllUsersDB = async () => {
 export const transfertMoney = async (currency: moneyTypes, giverId: string, recipientId: string, amount: number) => {
   if (!Object.values(moneyTypes).includes(currency)) throw new Error("wrong type of currency")
 
-  const userAttributesToSelect = Object.values(userAttributeToSelect)
-  const walletAttributesToSelect = Object.values(walletAttributeToSelect)
+  const userAttributesToSelect = Object.values(userAttributes)
+  const walletAttributesToSelect = Object.values(walletAttributes)
 
   const t: Transaction = await createConnectionSequelize().transaction()
 
@@ -69,11 +72,10 @@ export const transfertMoney = async (currency: moneyTypes, giverId: string, reci
 
     if (!giverWalletToUpdate) throw new Error("No giver wallet to update")
 
-    // @ts-ignore
     // console.log({ giverUserInfo, giverNewBalance, giverWalletToUpdate })
 
     // @ts-ignore
-    const updateWalletGiverResult = await Wallet.update({ [currency]: giverNewBalance }, { where: { walletId: giverWalletToUpdate.walletId }, transaction: t }).catch((err) => console.log(err))
+    const updateWalletGiverResult = await Wallet.update({ [currency]: giverNewBalance }, { where: { walletId: giverWalletToUpdate.walletId }, transaction: t })
 
     // console.log({ updateWalletGiverResult })
 
@@ -93,7 +95,6 @@ export const transfertMoney = async (currency: moneyTypes, giverId: string, reci
 
     if (!recipientWalletToUpdate) throw new Error("No recipient wallet to update")
 
-    // @ts-ignore
     // console.log(recipientWalletToUpdate.walletId, { recipientNewBalance })
 
     // @ts-ignore
