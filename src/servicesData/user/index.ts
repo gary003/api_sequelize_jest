@@ -7,7 +7,6 @@ import { createConnectionSequelize } from "../dataSource/link"
 import { moneyTypes } from "../wallet"
 
 export const getUserInfoById = async (userId: string): Promise<userInfo> => {
-  // console.log({ userId })
   const userAttributesToSelect = Object.values(userAttributes)
   const walletAttributesToSelect = Object.values(walletAttributes)
 
@@ -28,8 +27,6 @@ export const getUserInfoById = async (userId: string): Promise<userInfo> => {
   if (!foundUser) throw new Error("User not found")
 
   const result = (await cleanSequelizeResponse([foundUser])) as userInfo[]
-
-  // console.log({ result })
 
   return result[0]
 }

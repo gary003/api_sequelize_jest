@@ -12,4 +12,4 @@ export enum walletAttributes {
   // HARDCURRENCY = "hardCurrency",
 }
 
-export type userInfo = Record<userAttributes, string> & Record<walletAttributes, string>
+export type userInfo = Record<userAttributes, string> & Record<walletAttributes, string | number>
