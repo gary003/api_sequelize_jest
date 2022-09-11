@@ -4,7 +4,7 @@ import Wallet from "../models/wallet"
 import { cleanSequelizeResponse } from "../helpers/index"
 import { userAttributes, userInfo, walletAttributes } from "./dto2"
 import { createConnectionSequelize } from "../dataSource/link"
-import { moneyTypes } from "../wallet"
+import { moneyTypes } from "../wallet/dto"
 
 export const getUserInfoById = async (userId: string): Promise<userInfo> => {
   const userAttributesToSelect = Object.values(userAttributes)

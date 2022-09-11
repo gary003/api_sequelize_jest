@@ -1,4 +1,4 @@
-import { getAllUsersDB, getUserInfoById } from "../../servicesData/user"
+import { getAllUsersDB, getUserInfoById } from "../../servicesData/sequelize/user"
 import { userDTO } from "./dto"
 
 export const getAllUsers = async (): Promise<userDTO[]> => {
