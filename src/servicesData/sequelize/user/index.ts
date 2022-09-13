@@ -3,7 +3,7 @@ import User from "../models/user"
 import Wallet from "../models/wallet"
 import { cleanSequelizeResponse } from "../helpers/index"
 import { userAttributes, userInfo, walletAttributes } from "./dto2"
-import { createConnectionSequelize } from "../dataSource/link"
+import { commitTransaction, createAndStartTransaction, createConnectionSequelize, rollbackTransaction } from "../dataSource/link"
 import { moneyTypes } from "../wallet/dto"
 
 export const getUserInfoById = async (userId: string): Promise<userInfo> => {
@@ -52,67 +52,63 @@ export const getAllUsersDB = async () => {
 export const transfertMoney = async (currency: moneyTypes, giverId: string, recipientId: string, amount: number) => {
   if (!Object.values(moneyTypes).includes(currency)) throw new Error("wrong type of currency")
 
-  const userAttributesToSelect = Object.values(userAttributes)
-  const walletAttributesToSelect = Object.values(walletAttributes)
+  const giverUserInfo: userInfo = await getUserInfoById(giverId)
 
-  const t: Transaction = await createConnectionSequelize().transaction()
+  const giverNewBalance = Number(giverUserInfo[currency as unknown as keyof userInfo]) - amount
 
-  try {
-    // Then, we do some calls passing this transaction as an option:
-    const giverUserInfo: userInfo = await getUserInfoById(giverId)
+  if (giverNewBalance < 0) throw new Error("Not enough funds to make transaction")
 
-    const giverNewBalance = Number(giverUserInfo[currency as unknown as keyof userInfo]) - amount
+  // console.log({ giverUserInfo, giverNewBalance })
 
-    // console.log({ giverUserInfo, giverNewBalance })
+  const giverWalletToUpdate: Model | null = await Wallet.findOne({ where: { userId: giverId }, raw: true }).catch((err) => err)
 
-    const giverWalletToUpdate: Model | null = await Wallet.findOne({ where: { userId: giverId }, raw: true })
+  const transacRunner: Transaction = await createAndStartTransaction().catch((err) => err)
 
-    if (!giverWalletToUpdate) throw new Error("No giver wallet to update")
+  if (!transacRunner) throw new Error("Impossible to create transaction")
 
-    // console.log({ giverUserInfo, giverNewBalance, giverWalletToUpdate })
+  if (!giverWalletToUpdate) throw new Error("No giver wallet to update")
 
-    // @ts-ignore
-    const updateWalletGiverResult = await Wallet.update({ [currency]: giverNewBalance }, { where: { walletId: giverWalletToUpdate.walletId }, transaction: t })
+  // console.log({ giverUserInfo, giverNewBalance, giverWalletToUpdate })
 
-    // console.log({ updateWalletGiverResult })
+  // @ts-ignore
+  const updateWalletGiverResult = await Wallet.update({ [currency]: giverNewBalance }, { where: { walletId: giverWalletToUpdate.walletId }, transaction: transacRunner }).catch((err) => err)
 
-    if (!updateWalletGiverResult || updateWalletGiverResult[0] === 0) {
-      throw new Error("Impossible to update the giver wallet info")
-    }
+  // console.log({ updateWalletGiverResult })
 
-    // Then, we do some calls passing this transaction as an option:
-    const recipientUserInfo = (await getUserInfoById(recipientId)) as userInfo
-
-    // @ts-ignore
-    const recipientNewBalance = Number(recipientUserInfo[currency]) + amount
-
-    // console.log({ recipientUserInfo, recipientNewBalance })
-
-    const recipientWalletToUpdate: Model | null = await Wallet.findOne({ where: { userId: recipientId }, raw: true })
-
-    if (!recipientWalletToUpdate) throw new Error("No recipient wallet to update")
-
-    // console.log(recipientWalletToUpdate.walletId, { recipientNewBalance })
-
-    // @ts-ignore
-    const updateWalletRecipientResult = await Wallet.update({ [currency]: recipientNewBalance }, { where: { walletId: recipientWalletToUpdate.walletId }, transaction: t })
-
-    // console.log({ updateWalletRecipientResult })
-
-    if (updateWalletRecipientResult[0] === 0) {
-      throw new Error("Impossible to update the recipient wallet info")
-    }
-
-    await t.commit()
-
-    return true
-  } catch (error) {
-    // If the execution reaches this line, an error was thrown.
-    // We rollback the transaction.
-    console.log({ error })
-
-    await t.rollback()
-
-    return false
+  if (!updateWalletGiverResult || updateWalletGiverResult[0] === 0) {
+    rollbackTransaction(transacRunner)
+    throw new Error("Impossible to update the giver wallet info")
   }
+
+  // Then, we do some calls passing this transaction as an option:
+  const recipientUserInfo = (await getUserInfoById(recipientId)) as userInfo
+
+  // @ts-ignore
+  const recipientNewBalance = Number(recipientUserInfo[currency]) + amount
+
+  // console.log({ recipientUserInfo, recipientNewBalance })
+
+  const recipientWalletToUpdate: Model | null = await Wallet.findOne({ where: { userId: recipientId }, raw: true }).catch((err) => err)
+
+  if (!recipientWalletToUpdate) {
+    rollbackTransaction(transacRunner)
+    throw new Error("No recipient wallet to update")
+  }
+
+  // // @ts-ignore
+  // console.log(recipientWalletToUpdate.walletId, { recipientNewBalance })
+
+  // @ts-ignore
+  const updateWalletRecipientResult = await Wallet.update({ [currency]: recipientNewBalance }, { where: { walletId: recipientWalletToUpdate.walletId }, transaction: transacRunner })
+
+  // console.log({ updateWalletRecipientResult })
+
+  if (updateWalletRecipientResult[0] === 0) {
+    rollbackTransaction(transacRunner)
+    throw new Error("Impossible to update the recipient wallet info")
+  }
+
+  commitTransaction(transacRunner)
+
+  return true
 }

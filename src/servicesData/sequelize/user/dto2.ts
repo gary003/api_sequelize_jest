@@ -1,5 +1,3 @@
-import { getUserInfoById } from "."
-
 export enum userAttributes {
   USERID = "userId",
   FIRSTNAME = "firstname",

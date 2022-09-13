@@ -30,15 +30,15 @@ describe("tests", () => {
 
     it("should fail getting one the user from user DB", async () => {
       const fakeGetUserInfoById = jest.spyOn(serviceDataModule, "getUserInfoById")
+
       try {
         fakeGetUserInfoById.mockRejectedValue(new Error("Cannot get user"))
 
         await getUser("68965564-0234-11ed-b939-0242ac120002")
-        // console.log(res)
 
         throw new Error("Should not happen")
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         expect(error).toBeTruthy()
         expect(fakeGetUserInfoById).toBeCalled()
         expect(error.message).toEqual("Cannot get user")
@@ -46,9 +46,9 @@ describe("tests", () => {
     })
   })
 
-  describe("src > servicesData > user", () => {
+  describe.only("src > servicesData > user", () => {
     it("should transfert money", async () => {
-      const res = await serviceDataModule.transfertMoney(moneyTypes.SOFTCURRENCY, "35269564-0234-11ed-b939-0242ac120002", "68965564-0234-11ed-b939-0242ac120002", 40)
+      const res = await serviceDataModule.transfertMoney(moneyTypes.SOFTCURRENCY, "35269564-0234-11ed-b939-0242ac120002", "68965564-0234-11ed-b939-0242ac120002", 25)
       // console.log({ res })
 
       expect(res).toBeTruthy()
