@@ -7,6 +7,9 @@ import { moneyTypes } from "../../../../../src/servicesData/sequelize/wallet/dto
 
 describe("tests", () => {
   describe("src > services > user", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
     it("should get all the users from user DB service", async () => {
       const res = await getAllUsers()
       // console.log(res)
@@ -46,12 +49,12 @@ describe("tests", () => {
     })
   })
 
-  describe.only("src > servicesData > user", () => {
-    it("should transfert money", async () => {
-      const res = await serviceDataModule.transfertMoney(moneyTypes.SOFTCURRENCY, "35269564-0234-11ed-b939-0242ac120002", "68965564-0234-11ed-b939-0242ac120002", 25)
-      // console.log({ res })
+  // describe.only("src > servicesData > user", () => {
+  //   it("should transfert money", async () => {
+  //     const res = await serviceDataModule.transfertMoney(moneyTypes.SOFTCURRENCY, "35269564-0234-11ed-b939-0242ac120002", "68965564-0234-11ed-b939-0242ac120002", 25)
+  //     // console.log({ res })
 
-      expect(res).toBeTruthy()
-    })
-  })
+  //     expect(res).toBeTruthy()
+  //   })
+  // })
 })
