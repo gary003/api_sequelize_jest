@@ -3,7 +3,6 @@
 import { describe, expect } from "@jest/globals"
 import { getAllUsers, getUser } from "../../../../../src/services/user"
 import * as serviceDataModule from "../../../../../src/servicesData/sequelize/user"
-import { moneyTypes } from "../../../../../src/servicesData/sequelize/wallet/dto"
 
 describe("tests", () => {
   describe("src > services > user", () => {

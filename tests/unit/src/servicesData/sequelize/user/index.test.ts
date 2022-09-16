@@ -1,5 +1,5 @@
-import * as serviceDataModule from "../../../../../../src/servicesData/sequelize/user"
-import { moneyTypes } from "../../../../../../src/servicesData/sequelize/wallet/dto"
+import { moneyTypes } from "../../../../../../src/services/user/dto"
+import * as serviceDataModule from "../../../../../../src/services/user"
 
 describe("src > servicesData > user", () => {
   beforeEach(() => {

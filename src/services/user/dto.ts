@@ -4,3 +4,8 @@ export type userDTO = {
   lastname: string
   softCurrency: number
 }
+
+export enum moneyTypes {
+  SOFTCURRENCY = "softCurrency",
+  HARDCURRENCY = "hardCurrency",
+}
