@@ -11,7 +11,7 @@ describe("tests", () => {
     })
     it("should get all the users from user DB service", async () => {
       const res = await getAllUsers()
-      // console.log(res)
+      console.log(res)
 
       expect(res).not.toBeNull()
       expect(res[0].userId).toBeDefined()
@@ -23,7 +23,7 @@ describe("tests", () => {
       const resp = { data: users }
 
       const res = await getUser("68965564-0234-11ed-b939-0242ac120002")
-      // console.log(res)
+      console.log(res)
 
       expect(res).not.toBeNull()
       expect(res.userId).toBeDefined()

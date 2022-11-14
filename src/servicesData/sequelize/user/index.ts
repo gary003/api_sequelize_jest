@@ -3,6 +3,7 @@ import User from "../models/user"
 import Wallet from "../models/wallet"
 import { cleanSequelizeResponse } from "../helpers/index"
 import { userAttributes, userInfo, walletAttributes } from "./dto2"
+import { QueryTypes } from "sequelize"
 
 export const getUserInfoById = async (userId: string): Promise<userInfo> => {
   const userAttributesToSelect = Object.values(userAttributes)
@@ -20,6 +21,8 @@ export const getUserInfoById = async (userId: string): Promise<userInfo> => {
       userId,
     },
     raw: true,
+    nest: true,
+    type: QueryTypes.SELECT,
   })
 
   if (!foundUser) throw new Error("User not found")
@@ -42,6 +45,8 @@ export const getAllUsersDB = async () => {
     ],
     attributes: userAttributesToSelect,
     raw: true,
+    nest: true,
+    type: QueryTypes.SELECT,
   })
 
   return await cleanSequelizeResponse(allUsersInfo)
