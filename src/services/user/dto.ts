@@ -1,11 +1,20 @@
+import { walletDTO } from "../wallet/dto"
+
 export type userDTO = {
   userId: string
-  // firstname: string
+  firstname: string
   lastname: string
-  softCurrency: number
+  Wallet?: walletDTO // softCurrency: number
 }
 
-export enum moneyTypes {
-  SOFTCURRENCY = "softCurrency",
-  HARDCURRENCY = "hardCurrency",
+const us: userDTO = {
+  userId: "",
+  firstname: "",
+  lastname: "",
+  Wallet: {
+    walletId: "azzr",
+    hardCurrency: 123,
+  },
 }
+
+console.log(us)

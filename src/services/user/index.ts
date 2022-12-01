@@ -1,7 +1,7 @@
 import { commitTransaction, createAndStartTransaction, rollbackTransaction } from "../../servicesData/sequelize/dataSource/link"
 import { getAllUsersDB, getUserInfoById } from "../../servicesData/sequelize/user"
 import { getWalletInfoByUserId, updateWalletTransaction } from "../../servicesData/sequelize/wallet"
-import { moneyTypes, userDTO } from "./dto"
+import { userDTO } from "./dto"
 
 export const getAllUsers = async (): Promise<userDTO[]> => {
   const allUsers: userDTO[] = (await getAllUsersDB()) as userDTO[]

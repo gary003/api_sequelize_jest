@@ -1,4 +1,4 @@
-import { Model, Transaction } from "sequelize/types"
+import { Model } from "sequelize/types"
 import User from "../models/user"
 import Wallet from "../models/wallet"
 import { userAttributes, userInfo, walletAttributes } from "./dto2"
@@ -9,13 +9,13 @@ export const getUserInfoById = async (userId: string): Promise<userInfo> => {
   const walletAttributesToSelect = Object.values(walletAttributes)
 
   const foundUser: Model | null = await User.findOne({
+    attributes: userAttributesToSelect,
     include: [
       {
         model: Wallet,
         attributes: walletAttributesToSelect,
       },
     ],
-    attributes: userAttributesToSelect,
     where: {
       userId,
     },
