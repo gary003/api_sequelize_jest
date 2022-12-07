@@ -1,3 +1,4 @@
+import { moneyTypes } from "../../domain"
 import { commitTransaction, createAndStartTransaction, rollbackTransaction } from "../../servicesData/sequelize/dataSource/link"
 import { getAllUsersDB, getUserInfoById } from "../../servicesData/sequelize/user"
 import { getWalletInfoByUserId, updateWalletTransaction } from "../../servicesData/sequelize/wallet"

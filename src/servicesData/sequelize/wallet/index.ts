@@ -1,5 +1,5 @@
 import { Transaction } from "sequelize/types"
-import { moneyTypes } from "../../../services/user/dto"
+import { moneyTypes } from "../../../domain"
 import Wallet from "../models/wallet"
 
 export const getWalletInfoByUserId = async (userId: string) => {
