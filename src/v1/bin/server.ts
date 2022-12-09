@@ -15,7 +15,6 @@ server.on("error", (error) => {
 
 server.on("listening", () => {
   console.log(`listen on http://${localIp}:${port}`)
-  console.log(`swagger/OpenAPI on http://${localIp}:${port}/apiDoc`)
 })
 
 server.listen(port, () => {

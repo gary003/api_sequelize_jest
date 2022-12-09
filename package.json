@@ -4,7 +4,7 @@
   "description": "template ts",
   "main": "src/app.js",
   "scripts": {
-    "dev": "./node_modules/nodemon/bin/nodemon.js ./src/bin/server.ts",
+    "dev": "./node_modules/nodemon/bin/nodemon.js ./src/v1/bin/server.ts",
     "test": "jest --detectOpenHandles"
   },
   "repository": {
